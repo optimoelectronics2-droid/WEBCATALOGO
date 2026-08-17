@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://trifusiontechnologies1936-ctrl.github.io/Trifusion-Technologies/sitemap.xml
