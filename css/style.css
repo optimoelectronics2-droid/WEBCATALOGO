@@ -1441,6 +1441,10 @@ section[id] {
   border-color: var(--border-strong);
 }
 
+.loc-photos img:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
 .loc-map {
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -1463,7 +1467,7 @@ section[id] {
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   align-items: stretch;
   gap: 20px;
   max-width: var(--container);
@@ -1541,11 +1545,6 @@ section[id] {
 .c-ph {
   background: var(--grad);
   box-shadow: 0 12px 26px -10px rgba(99, 102, 241, 0.6);
-}
-
-.c-ph2 {
-  background: linear-gradient(135deg, var(--accent-cyan), var(--primary));
-  box-shadow: 0 12px 26px -10px rgba(34, 211, 238, 0.6);
 }
 
 .c-ig {
@@ -1805,11 +1804,6 @@ section[id] {
 /* En 3 columnas (8 categorías) la última card ocupa 2 columnas: sin filas huérfanas */
 @media (max-width: 1180px) and (min-width: 681px) {
   .cat-grid .cat-card:nth-child(3n + 2):last-child {
-    grid-column: span 2;
-  }
-
-  /* Con 5 tarjetas en 2 columnas, la última ocupa la fila completa */
-  .contact-grid .contact-card:last-child {
     grid-column: span 2;
   }
 }
