@@ -1297,8 +1297,8 @@ section[id] {
 .about-photo img {
   width: 100%;
   height: auto;
-  aspect-ratio: 4 / 3.2;
-  object-fit: cover;
+  aspect-ratio: 1086 / 1268;
+  display: block;
 }
 
 .about-card {
@@ -1429,8 +1429,8 @@ section[id] {
 
 .loc-photos img {
   width: 100%;
-  height: 130px;
-  object-fit: cover;
+  height: auto;
+  display: block;
   border-radius: 14px;
   border: 1px solid var(--border);
   transition: transform var(--t-fast) var(--ease-out), border-color var(--t-fast) ease-out;
@@ -1441,7 +1441,12 @@ section[id] {
   border-color: var(--border-strong);
 }
 
-.loc-photos img:nth-child(3) {
+.loc-photos img:first-child {
+  aspect-ratio: 1086 / 1268;
+}
+
+.loc-photos img:nth-child(2) {
+  aspect-ratio: 1400 / 657;
   grid-column: 1 / -1;
 }
 
@@ -1882,7 +1887,7 @@ section[id] {
   }
 
   .about-photo img {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1086 / 1268;
   }
 }
 
@@ -1908,10 +1913,6 @@ section[id] {
 
   .loc-photos {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .loc-photos img {
-    height: 110px;
   }
 
   .footer-grid {
