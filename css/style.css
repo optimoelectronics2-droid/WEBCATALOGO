@@ -2068,3 +2068,80 @@ section[id] {
     animation: none;
   }
 }
+
+/* ============ POLISH TÁCTIL Y MÓVIL ============ */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a,
+button,
+.contact-card,
+.car-btn {
+  touch-action: manipulation;
+}
+
+/* Feedback de pulsación en pantallas táctiles */
+.btn:active,
+.contact-card:active,
+.car-btn:active,
+.nav-toggle:active {
+  transform: translate(var(--mx, 0px), var(--my, 0px)) scale(0.96);
+}
+
+@media (hover: none) {
+  .btn:active {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+  }
+}
+
+.nav-panel nav a.active {
+  color: var(--primary);
+}
+
+.contact-card,
+.car-btn {
+  overflow: hidden;
+}
+
+.contact-card > *,
+.car-btn > * {
+  position: relative;
+  z-index: 2;
+}
+
+.contact-card .ripple,
+.car-btn .ripple {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 65%);
+  transform: scale(0);
+  opacity: 1;
+  animation: ripple-out var(--t-med) var(--ease-out) forwards;
+  pointer-events: none;
+}
+
+.carousel {
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Márgenes seguros para iPhone (muesca y barra inferior) */
+@supports (padding: max(0px)) {
+  .nav-inner {
+    padding-top: max(14px, env(safe-area-inset-top));
+  }
+
+  .footer-bottom {
+    padding-bottom: max(26px, env(safe-area-inset-bottom));
+  }
+
+  .wa-float {
+    bottom: max(22px, env(safe-area-inset-bottom));
+  }
+}

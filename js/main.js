@@ -139,21 +139,26 @@
         btn.style.setProperty('--my', '0px');
       });
     });
+  }
 
-    document.addEventListener('click', function (e) {
-      var btn = e.target.closest ? e.target.closest('.btn') : null;
-      if (!btn) return;
-      var r = btn.getBoundingClientRect();
+  /* Ripple en botones, tarjetas de contacto y flechas del carrusel.
+     Funciona con ratón y con dedo (pointerdown), respetando reduced-motion. */
+  if (!prefersReduced) {
+    document.addEventListener('pointerdown', function (e) {
+      var target = e.target.closest ? e.target.closest('.btn, .contact-card, .car-btn') : null;
+      if (!target) return;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      var r = target.getBoundingClientRect();
       var d = Math.max(r.width, r.height) * 2.2;
       var span = document.createElement('span');
       span.className = 'ripple';
       span.style.width = span.style.height = d + 'px';
       span.style.left = (e.clientX - r.left - d / 2) + 'px';
       span.style.top = (e.clientY - r.top - d / 2) + 'px';
-      btn.appendChild(span);
+      target.appendChild(span);
       setTimeout(function () {
         if (span.parentNode) span.parentNode.removeChild(span);
-      }, 400);
+      }, 500);
     });
   }
 
@@ -276,4 +281,32 @@
 
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  /* ===== 7. Scrollspy: resalta la sección activa en el menú ===== */
+  var spyLinks = navPanel
+    ? Array.prototype.slice.call(navPanel.querySelectorAll('a[href^="#"]'))
+    : [];
+  var spySections = spyLinks
+    .map(function (a) {
+      var el = document.querySelector(a.getAttribute('href'));
+      return el && el.id ? el : null;
+    })
+    .filter(Boolean);
+
+  if (spyLinks.length && 'IntersectionObserver' in window) {
+    var spyIO = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          spyLinks.forEach(function (a) {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+          });
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    spySections.forEach(function (s) {
+      spyIO.observe(s);
+    });
+  }
 })();
