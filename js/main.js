@@ -309,4 +309,107 @@
       spyIO.observe(s);
     });
   }
+
+  /* ===== 8. Lightbox del showroom: abre cada foto a tamaño completo ===== */
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lbImg');
+  var lbCaption = document.getElementById('lbCaption');
+  var lbClose = document.getElementById('lbClose');
+  var lbPrev = document.getElementById('lbPrev');
+  var lbNext = document.getElementById('lbNext');
+  var lbItems = [];
+  var lbIndex = -1;
+
+  if (lb && lbImg && lbCaption && carousel) {
+    carousel.querySelectorAll('.car-card').forEach(function (card, i) {
+      var img = card.querySelector('.car-img img');
+      if (!img) return;
+      var cap = card.querySelector('figcaption');
+      lbItems.push({
+        src: img.currentSrc || img.src,
+        alt: img.alt || '',
+        cap: cap ? cap.textContent.trim() : ''
+      });
+      card.addEventListener('click', function () {
+        openLightbox(i);
+      });
+    });
+
+    function renderLightbox() {
+      lbImg.src = lbItems[lbIndex].src;
+      lbImg.alt = lbItems[lbIndex].alt;
+      lbCaption.textContent = lbItems[lbIndex].cap;
+    }
+
+    function openLightbox(i) {
+      if (!lbItems.length) return;
+      lbIndex = i;
+      renderLightbox();
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbClose.focus();
+    }
+
+    function closeLightbox() {
+      lb.classList.remove('open');
+      lbImg.removeAttribute('src');
+      document.body.style.overflow = '';
+    }
+
+    function stepLightbox(dir) {
+      if (!lbItems.length) return;
+      lbIndex = (lbIndex + dir + lbItems.length) % lbItems.length;
+      renderLightbox();
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+
+    lbPrev.addEventListener('click', function () {
+      stepLightbox(-1);
+    });
+
+    lbNext.addEventListener('click', function () {
+      stepLightbox(1);
+    });
+
+    lb.addEventListener('click', function (e) {
+      if (e.target === lb) closeLightbox();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') stepLightbox(-1);
+      if (e.key === 'ArrowRight') stepLightbox(1);
+    });
+
+    /* Deslizar con el dedo para pasar de foto */
+    var lbTouchX = 0;
+    var lbTracking = false;
+    lb.addEventListener(
+      'touchstart',
+      function (e) {
+        lbTracking = true;
+        lbTouchX = e.touches[0].clientX;
+      },
+      { passive: true }
+    );
+
+    lb.addEventListener(
+      'touchmove',
+      function (e) {
+        if (!lbTracking) return;
+        var dx = e.touches[0].clientX - lbTouchX;
+        if (Math.abs(dx) > 50) {
+          stepLightbox(dx < 0 ? 1 : -1);
+          lbTracking = false;
+        }
+      },
+      { passive: true }
+    );
+
+    lb.addEventListener('touchend', function () {
+      lbTracking = false;
+    });
+  }
 })();
